@@ -1,26 +1,56 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
 
-mainClassName = 'hello.HelloWorld'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
 
-// tag::repositoriesp[]
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
-// end::repositoriesp[]
 
-// tag::jar[]
-jar {
-    baseName = 'gs-gradle'
-    version =  '0.1.0'
+sourceSets {
+    test {
+        java.srcDir 'src/test/java'
+    }
+    integrationTest {
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+        java.srcDir 'src/test-integration/java'
+    }
 }
-// end::jar[]
 
-// tag::dependencies[]
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+task itest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+
+    // This is not needed, but I like to see which tests have run
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
 
 dependencies {
-    compile "joda-time:joda-time:2.2"
+    compile('org.springframework.boot:spring-boot-starter-web') {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+    compile('org.springframework.boot:spring-boot-starter-jetty')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
 }
