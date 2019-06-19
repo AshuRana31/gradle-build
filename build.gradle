@@ -1,34 +1,33 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE")
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'application'
 
+mainClassName = 'hello.HelloWorld'
+
+// tag::repositoriesp[]
+repositories {
+	mavenCentral()
+}
+// end::repositoriesp[]
+
+// tag::jar[]
 jar {
-    baseName = 'gs-spring-boot-docker'
+    baseName = 'gs-gradle'
     version =  '0.1.0'
 }
+// end::jar[]
 
-repositories {
-    mavenCentral()
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+// tag::dependencies[]
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+    compile "joda-time:joda-time:2.2"
 }
+// end::dependencies[]
 
+// tag::wrapper[]
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '1.12'
 }
+// end::wrapper[]
