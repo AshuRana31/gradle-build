@@ -36,15 +36,6 @@ configurations {
     integrationTestRuntime.extendsFrom testRuntime
 }
 
-task itest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath
-
-    // This is not needed, but I like to see which tests have run
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web') {
