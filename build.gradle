@@ -28,6 +28,6 @@ dependencies {
 
 // tag::wrapper[]
 wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '5.0'
 }
 // end::wrapper[]
